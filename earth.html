@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script src="http://www.webglearth.com/v2/api.js"></script>
+    <script>
+      function initialize() {
+        var earth = new WE.map('earth_div');
+        //Layer on Earth
+        WE.tileLayer('http://tileserver.maptiler.com/nasa/{z}/{x}/{y}.jpg', {
+          minZoom: 0,
+          maxZoom: 5,
+          attribution: 'NASA'
+        }).addTo(earth);
+
+        // Start a simple rotation animation
+        var before = null;
+        requestAnimationFrame(function animate(now) {
+            var c = earth.getPosition();
+            var elapsed = before? now - before: 0;
+            before = now;
+            earth.setCenter([c[0], c[1] + 0.1*(elapsed/30)]);
+            requestAnimationFrame(animate);
+        });
+
+        //Markers
+        var marker = WE.marker([51.5, -0.09]).addTo(earth);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true});
+
+        var marker2 = WE.marker([30.058056, 31.228889]).addTo(earth);
+        marker2.bindPopup("<b>What's News<br>Get Involved</br></b> <h1> hi </h1>", {maxWidth: 300, closeButton: true});
+
+        // var markerCustom = WE.marker([30, 40], 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png', 50, 50).addTo(earth);
+        // markerCustom.bindPopup("Hello World", {maxWidth: 120, closeButton: true});
+
+      }
+    </script>
+    <style>
+      html, body{
+        padding: 0;
+        margin: 0;
+        background-image: url("https://i.pinimg.com/originals/2f/99/bf/2f99bfc0ac6d02db55e307d676168af2.gif");}
+      #earth_div{
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        position:
+        absolute !important;
+      }
+    </style>
+
+
+    <title>Spectacle</title>
+  </head>
+
+  <body onload="initialize()">
+
+    <div id="earth_div"></div>
+  </body>
+</html>
